@@ -10,6 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Dominio;
+using Repository;
+using Repository.InterfaceReceita;
+using Repository.InterfaceUsuario;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiReceitas
 {
@@ -26,6 +31,15 @@ namespace ApiReceitas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<IReceitasApp, ReceitasApp>();
+            services.AddScoped<IUsuarioApp, UsuarioApp>();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+            services.AddDbContext<ReceitasContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConnectionSQL")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

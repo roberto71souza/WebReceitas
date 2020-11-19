@@ -5,19 +5,27 @@ using System.Threading.Tasks;
 using Dominio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository.InterfaceReceita;
 
 namespace ApiReceitas.Controllers
 {
     [ApiController]
-    [Route("Api")]
+    [Route("[Controller]")]
     public class ReceitaController : ControllerBase
     {
+
+        public IReceitasApp _receitaApp { get; private set; }
+
+        public ReceitaController(IReceitasApp receitaApp)
+        {
+            _receitaApp = receitaApp;
+        }
+
         // GET: ReceitaController
         [HttpGet]
-        public ActionResult<IEnumerable<Usuario>> Get()
+        public ActionResult<IEnumerable<Receita>> Get()
         {
-            var result = new List<Usuario>();
-            result.Add(new Usuario { Id = 1, Cidade = "Sao paulo",Data_Nascimento= DateTime.Parse("23/08/1996"), Nome = "Roberto", Receita = new List<Receita> { { new Receita { Id = 1, Titulo = "a Melhor" } } } });
+            var result = _receitaApp.ListarReceitas();
             return Ok(result);
         }
 
@@ -25,7 +33,7 @@ namespace ApiReceitas.Controllers
         [HttpGet("{id}")]
         public ActionResult GetId(int id)
         {
-            var result = $"Get retorna id {id}";
+            var result = _receitaApp.BuscaID(id);
 
             return Ok(result);
         }
@@ -34,19 +42,27 @@ namespace ApiReceitas.Controllers
         [HttpPost]
         public ActionResult Adicionar(Receita modelo)
         {
+            _receitaApp.AdicionarReceita(modelo);
+
             return Ok();
         }
-        
+
         [HttpPut("{id}")]
         public ActionResult Editar(int id, Receita modelo)
         {
+            var resultModel = _receitaApp.BuscaID(id);
+            _receitaApp.Atualizar(modelo);
             return Ok();
         }
 
         // GET: ReceitaController/Delete/5
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            return Ok();
+            var resultModelo = _receitaApp.BuscaID(id);
+            _receitaApp.DeletarReceita(resultModelo);
+
+            return NoContent();
         }
     }
 }
