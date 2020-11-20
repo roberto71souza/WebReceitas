@@ -25,7 +25,7 @@ namespace Repository.InterfaceUsuario
 
         public IEnumerable<Usuario> ListarUsuario()
         {
-            var lista = _contexto.Usuarios.Include(x => x.Receitas).AsNoTracking().AsNoTracking().OrderBy(d => d.Id);
+            var lista = _contexto.Usuarios.Include(x => x.Receitas).AsNoTracking().OrderBy(d => d.Id);
             return lista.ToArray();
         }
 

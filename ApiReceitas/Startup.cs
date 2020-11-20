@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Dominio;
+using AutoMapper;
 using Repository;
 using Repository.InterfaceReceita;
 using Repository.InterfaceUsuario;
@@ -32,6 +31,7 @@ namespace ApiReceitas
         {
             services.AddControllers();
             services.AddScoped<IReceitasApp, ReceitasApp>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUsuarioApp, UsuarioApp>();
 
             services.AddControllersWithViews()

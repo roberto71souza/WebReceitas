@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiReceitas.Dtos;
+using AutoMapper;
 using Dominio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,54 +17,114 @@ namespace ApiReceitas.Controllers
     {
 
         public IReceitasApp _receitaApp { get; private set; }
+        public IMapper _mapper { get; private set; }
 
-        public ReceitaController(IReceitasApp receitaApp)
+        public ReceitaController(IReceitasApp receitaApp, IMapper mapper)
         {
             _receitaApp = receitaApp;
+            _mapper = mapper;
         }
 
         // GET: ReceitaController
         [HttpGet]
         public ActionResult<IEnumerable<Receita>> Get()
         {
-            var result = _receitaApp.ListarReceitas();
-            return Ok(result);
+            try
+            {
+                var result = _receitaApp.ListarReceitas();
+                var mapResult = _mapper.Map<IEnumerable<ReceitaDto>>(result);
+                return Ok(mapResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
         }
 
         //Get : id
         [HttpGet("{id}")]
         public ActionResult GetId(int id)
         {
-            var result = _receitaApp.BuscaID(id);
+            try
+            {
+                var result = _receitaApp.BuscaID(id);
 
-            return Ok(result);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                var mapResult = _mapper.Map<ReceitaDto>(result);
+                return Ok(mapResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
+
         }
 
         // Post: ReceitaController/Create
         [HttpPost]
-        public ActionResult Adicionar(Receita modelo)
+        public ActionResult<ReceitaDto> Adicionar(Receita modelo)
         {
-            _receitaApp.AdicionarReceita(modelo);
+            try
+            {
+                _receitaApp.AdicionarReceita(modelo);
 
-            return Ok();
+                var resultMap = _mapper.Map<ReceitaDto>(modelo);
+
+                return Created($"Receitas/{resultMap.Id}", resultMap);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
         }
 
+        // Put: ReceitaController/Put
         [HttpPut("{id}")]
-        public ActionResult Editar(int id, Receita modelo)
+        public ActionResult<ReceitaDto> Editar(int id, Receita modelo)
         {
-            var resultModel = _receitaApp.BuscaID(id);
-            _receitaApp.Atualizar(modelo);
-            return Ok();
+            try
+            {
+                var resultModel = _receitaApp.BuscaID(id);
+
+                if (resultModel == null)
+                {
+                    return NotFound();
+                }
+                _receitaApp.Atualizar(modelo);
+
+                var mapResult = _mapper.Map<ReceitaDto>(resultModel);
+
+                return Ok(mapResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
         }
 
-        // GET: ReceitaController/Delete/5
+        // Delete: ReceitaController/Delete/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var resultModelo = _receitaApp.BuscaID(id);
-            _receitaApp.DeletarReceita(resultModelo);
+            try
+            {
+                var resultModelo = _receitaApp.BuscaID(id);
 
-            return NoContent();
+                if (resultModelo == null)
+                {
+                    return NotFound();
+                }
+                _receitaApp.DeletarReceita(resultModelo);
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
         }
     }
 }

@@ -31,7 +31,8 @@ namespace Repository.InterfaceReceita
 
         public Receita BuscaID(int id)
         {
-            return _contexto.Receitas.Where(x => x.Id == id).Include(d => d.Usuario).AsNoTracking().FirstOrDefault();
+            var result = _contexto.Receitas.Where(x => x.Id == id).Include(d => d.Usuario).AsNoTracking().FirstOrDefault();
+            return result;
         }
 
         public void Atualizar(Receita modelo)
