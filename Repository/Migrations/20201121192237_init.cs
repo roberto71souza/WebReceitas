@@ -13,9 +13,9 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Cidade = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Cidade = table.Column<string>(nullable: false),
                     Estado = table.Column<string>(nullable: true),
                     Data_Nascimento = table.Column<DateTime>(nullable: false)
                 },
@@ -30,11 +30,11 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(nullable: true),
-                    Conteudo = table.Column<string>(nullable: true),
+                    Titulo = table.Column<string>(nullable: false),
+                    Conteudo = table.Column<string>(nullable: false),
                     Acessório = table.Column<string>(nullable: true),
                     Data_Publicacao = table.Column<DateTime>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: true)
+                    UsuarioId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +44,7 @@ namespace Repository.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

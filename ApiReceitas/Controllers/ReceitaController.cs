@@ -32,6 +32,10 @@ namespace ApiReceitas.Controllers
             try
             {
                 var result = _receitaApp.ListarReceitas();
+                if (result.Count() <= 0)
+                {
+                    return NoContent();
+                }
                 var mapResult = _mapper.Map<IEnumerable<ReceitaDto>>(result);
                 return Ok(mapResult);
             }

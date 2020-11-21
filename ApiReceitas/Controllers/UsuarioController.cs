@@ -31,7 +31,7 @@ namespace ApiReceitas.Controllers
             try
             {
                 var result = _usuarioApp.ListarUsuario();
-                if (result == null)
+                if (result.Count()<=0)
                 {
                     return NoContent();
                 }
