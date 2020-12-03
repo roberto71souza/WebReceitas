@@ -7,7 +7,8 @@ using AutoMapper;
 using Dominio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Repository.InterfaceUsuario;
+using Repository;
+using static ApiReceitas.Startup;
 
 namespace ApiReceitas.Controllers
 {
@@ -16,21 +17,21 @@ namespace ApiReceitas.Controllers
     public class UsuarioController : ControllerBase
     {
 
-        public IUsuarioApp _usuarioApp { get;private set; }
+        public IReceitasRepository _usuarioApp { get;private set; }
         public IMapper _mapper { get;private set; }
 
-        public UsuarioController(IUsuarioApp myProperty, IMapper map)
+        public UsuarioController(ServiceResolver myProperty, IMapper map)
         {
-            _usuarioApp = myProperty;
+            _usuarioApp = myProperty("usuario");
             _mapper = map;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Usuario>> Get()
+        public async Task<ActionResult<IEnumerable<Usuario>>> Get()
         {
             try
             {
-                var result = _usuarioApp.ListarUsuario();
+                var result = await _usuarioApp.Listar();
                 if (result.Count()<=0)
                 {
                     return NoContent();
@@ -45,11 +46,11 @@ namespace ApiReceitas.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(Usuario modelo)
+        public async Task<ActionResult> Post(Usuario modelo)
         {
             try
             {
-                _usuarioApp.AdicionarUsuario(modelo);
+               await _usuarioApp.Adicionar(modelo);
 
                 var resultMap = _mapper.Map<UsuarioDto>(modelo);
                 return Created($"usuario/{resultMap.Id}", resultMap);
@@ -61,17 +62,17 @@ namespace ApiReceitas.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var result = _usuarioApp.BuscaId(id);
+                var result = await _usuarioApp.BuscaID(id);
 
                 if (result == null)
                 {
                     return NotFound();
                 }
-                _usuarioApp.DeleteUsuario(result);
+               await _usuarioApp.Deletar(result);
                 return Ok();
             }
             catch (Exception e)

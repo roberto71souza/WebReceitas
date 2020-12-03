@@ -1,24 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
-using Repository;
-using Repository.InterfaceReceita;
-using Repository.InterfaceUsuario;
 using Microsoft.EntityFrameworkCore;
+using Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiReceitas
 {
     public class Startup
     {
+        public delegate IReceitasRepository ServiceResolver(string key);
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,9 +24,24 @@ namespace ApiReceitas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IReceitasApp, ReceitasApp>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IUsuarioApp, UsuarioApp>();
+
+            services.AddTransient<UsuarioApp>();
+            services.AddTransient<ReceitasApp>();
+
+            services.AddTransient<ServiceResolver>(serviceProvider => key =>
+            {
+                switch (key)
+                {
+                    case "usuario":
+                        return serviceProvider.GetService<UsuarioApp>();
+                    case "receita":
+                        return serviceProvider.GetService<ReceitasApp>();
+                    default:
+                        throw new NullReferenceException(); 
+                }
+            });
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

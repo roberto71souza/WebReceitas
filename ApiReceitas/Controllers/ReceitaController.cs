@@ -7,7 +7,8 @@ using AutoMapper;
 using Dominio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Repository.InterfaceReceita;
+using Repository;
+using static ApiReceitas.Startup;
 
 namespace ApiReceitas.Controllers
 {
@@ -16,22 +17,23 @@ namespace ApiReceitas.Controllers
     public class ReceitaController : ControllerBase
     {
 
-        public IReceitasApp _receitaApp { get; private set; }
+        public IReceitasRepository _receitaApp { get; private set; }
         public IMapper _mapper { get; private set; }
 
-        public ReceitaController(IReceitasApp receitaApp, IMapper mapper)
+        public ReceitaController(ServiceResolver receitaApp, IMapper mapper)
         {
-            _receitaApp = receitaApp;
+            _receitaApp = receitaApp("receita");
             _mapper = mapper;
         }
 
+
         // GET: ReceitaController
         [HttpGet]
-        public ActionResult<IEnumerable<Receita>> Get()
+        public async Task<ActionResult<IEnumerable<Receita>>> Get()
         {
             try
             {
-                var result = _receitaApp.ListarReceitas();
+                var result = await _receitaApp.Listar();
                 if (result.Count() <= 0)
                 {
                     return NoContent();
@@ -47,11 +49,11 @@ namespace ApiReceitas.Controllers
 
         //Get : id
         [HttpGet("{id}")]
-        public ActionResult GetId(int id)
+        public async Task<ActionResult> GetId(int id)
         {
             try
             {
-                var result = _receitaApp.BuscaID(id);
+                var result = await _receitaApp.BuscaID(id);
 
                 if (result == null)
                 {
@@ -69,11 +71,11 @@ namespace ApiReceitas.Controllers
 
         // Post: ReceitaController/Create
         [HttpPost]
-        public ActionResult<ReceitaDto> Adicionar(Receita modelo)
+        public async Task<ActionResult<ReceitaDto>> Adicionar(Receita modelo)
         {
             try
             {
-                _receitaApp.AdicionarReceita(modelo);
+               await _receitaApp.Adicionar(modelo);
 
                 var resultMap = _mapper.Map<ReceitaDto>(modelo);
 
@@ -87,19 +89,19 @@ namespace ApiReceitas.Controllers
 
         // Put: ReceitaController/Put
         [HttpPut("{id}")]
-        public ActionResult<ReceitaDto> Editar(int id, Receita modelo)
+        public async Task<ActionResult<ReceitaDto>> Editar(int id, Receita modelo)
         {
             try
             {
-                var resultModel = _receitaApp.BuscaID(id);
+                var resultModel = await _receitaApp.BuscaID(id);
 
                 if (resultModel == null)
                 {
                     return NotFound();
                 }
-                _receitaApp.Atualizar(modelo);
+                await _receitaApp.Atualizar(modelo);
 
-                var mapResult = _mapper.Map<ReceitaDto>(resultModel);
+                var mapResult = _mapper.Map<ReceitaDto>(modelo);
 
                 return Ok(mapResult);
             }
@@ -111,17 +113,17 @@ namespace ApiReceitas.Controllers
 
         // Delete: ReceitaController/Delete/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                var resultModelo = _receitaApp.BuscaID(id);
+                var resultModelo = await _receitaApp.BuscaID(id);
 
                 if (resultModelo == null)
                 {
                     return NotFound();
                 }
-                _receitaApp.DeletarReceita(resultModelo);
+               await _receitaApp.Deletar(resultModelo);
 
                 return NoContent();
             }
