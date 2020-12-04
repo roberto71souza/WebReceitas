@@ -75,9 +75,9 @@ namespace ApiReceitas.Controllers
         {
             try
             {
-                var resultMap = _mapper.Map<ReceitaDto>(modelo);
-
                 await _receitaApp.Adicionar(modelo);
+
+                var resultMap = _mapper.Map<ReceitaDto>(modelo);
 
                 return Created($"Receitas/{resultMap.Id}", resultMap);
             }
