@@ -24,22 +24,26 @@ namespace Repository
             return lista;
         }
 
-        public Task<object> BuscaID(int id)
+        public async Task<object> BuscaID(int id)
         {
-            throw new NotImplementedException();
+            var result = await _contexto.Usuarios.Where(x => x.Id == id).Include(d => d.Receitas).AsNoTracking().OrderBy(d => d.Id).FirstOrDefaultAsync();
+            return result;
         }
 
         public Task Adicionar(object modelo)
         {
-            throw new NotImplementedException();
-        }
+            _contexto.Add(modelo);
 
-        public Task Atualizar(object modelo)
-        {
-            throw new NotImplementedException();
+           return Task.FromResult(_contexto.SaveChanges());
         }
 
         public Task Deletar<T>(T modelo)
+        {
+            _contexto.Remove(modelo);
+           return Task.FromResult(_contexto.SaveChanges());
+        }
+
+        public Task Atualizar(object modelo)
         {
             throw new NotImplementedException();
         }
