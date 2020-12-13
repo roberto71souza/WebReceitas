@@ -29,7 +29,7 @@ namespace ApiReceitas.Controllers
 
         // GET: ReceitaController
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Receita>>> Get()
+        public async Task<ActionResult<IEnumerable<ReceitaDto>>> Get()
         {
             try
             {
@@ -48,7 +48,7 @@ namespace ApiReceitas.Controllers
         }
 
         //Get : id
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetId")]
         public async Task<ActionResult> GetId(int id)
         {
             try
@@ -71,15 +71,17 @@ namespace ApiReceitas.Controllers
 
         // Post: ReceitaController/Create
         [HttpPost]
-        public async Task<ActionResult<ReceitaDto>> Adicionar(Receita modelo)
+        public async Task<ActionResult<ReceitaDto>> Adicionar(ReceitaDto modelo)
         {
             try
             {
-                await _receitaApp.Adicionar(modelo);
+                var resultMap = _mapper.Map<Receita>(modelo);
 
-                var resultMap = _mapper.Map<ReceitaDto>(modelo);
+                await _receitaApp.Adicionar(resultMap);
 
-                return Created($"Receitas/{resultMap.Id}", resultMap);
+                _mapper.Map(modelo, resultMap);
+
+                return CreatedAtRoute(nameof(GetId), new { Id = modelo.Id }, modelo);
             }
             catch (Exception e)
             {
@@ -89,21 +91,24 @@ namespace ApiReceitas.Controllers
 
         // Put: ReceitaController/Put
         [HttpPut("{id}")]
-        public async Task<ActionResult<ReceitaDto>> Editar(int id, Receita modelo)
+        public async Task<ActionResult<ReceitaDto>> Editar(int id, ReceitaDto modelo)
         {
             try
             {
+                var mapResult = _mapper.Map<Receita>(modelo);
+
                 var resultModel = await _receitaApp.BuscaID(id);
 
                 if (resultModel == null)
                 {
                     return NotFound();
                 }
-                await _receitaApp.Atualizar(modelo);
 
-                var mapResult = _mapper.Map<ReceitaDto>(modelo);
+                await _receitaApp.Atualizar(mapResult);
 
-                return Ok(mapResult);
+                _mapper.Map(modelo,mapResult);
+
+                return Ok(modelo);
             }
             catch (Exception e)
             {
