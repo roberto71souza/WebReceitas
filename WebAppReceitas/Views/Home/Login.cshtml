@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="container signup-form">
+    <form>
+        <h2>LOGIN</h2>
+        <br>
+        <div class="form-group">
+            <input type="email" class="form-control" placeholder="Email" required="required">
+        </div>
+
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Senha" required="required">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg">Cadastrar</button>
+        </div>
+
+        <div class="form-group">
+            <a href="#" class="ForgetPwd text-success">Esqueci a Senha?</a>
+            <br>
+            <a asp-action="Registrar" class="ForgetPwd">Registrar</a>
+        </div>
+    </form>
+</div>
