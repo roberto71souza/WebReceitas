@@ -26,9 +26,25 @@ namespace WebAppReceitas.Controllers
         public IActionResult Login()
         {
             return View();
-        }    
+        }
         public IActionResult Registrar()
         {
+            return View();
+        }
+
+        public IActionResult EsqueciSenha()
+        {
+            return View();
+        }
+
+        public IActionResult ResetarSenha(/*string token,string email*/)
+        {
+            return View();
+        }
+
+        public IActionResult Confirmacao(string mensagem)
+        {
+            TempData["msg"] = $"Tudo certo !! {mensagem}";
             return View();
         }
 

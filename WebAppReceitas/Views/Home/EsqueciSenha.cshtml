@@ -1,0 +1,36 @@
+﻿@model WebAppReceitas.Models.EsqueciSenhaModel
+
+@{
+    ViewData["Title"] = "EsqueciSenha";
+}
+<style>
+    main{
+        margin-top: 80px;
+        margin-bottom: 120px;
+    }
+</style>
+
+<div class="container signup-form">
+
+<h2 style="color: white;">Esqueci a Senha</h2>
+
+<hr style="color: #fff;height: 2px;"/>
+        <form asp-action="ResetarSenha">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enviar" class="btns btn btn-primary" />
+            </div>
+        </form>
+    <div>
+    <a class="btn btn-warning" asp-action="Login" style="text-decoration: none;">Voltar</a>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

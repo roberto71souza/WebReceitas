@@ -39,7 +39,7 @@
 .signup-form .form-group {
     margin-bottom: 20px;
 }
-.signup-form .btn {
+.signup-form .btns {
     font-size: 16px;
     font-weight: bold;
     background: #3598dc;
@@ -47,7 +47,7 @@
     min-width: 140px;
 }
 
-.signup-form .btn:hover, .signup-form .btn:focus {
+.signup-form .btns:hover, .signup-form .btn:focus {
     background: #2389cd !important;
     outline: none;
 }
@@ -62,7 +62,7 @@
 }
 
 .signup-form form a {
-    color: #3598dc;
+    color: #534f4f;
     text-decoration: none;
 }
 
