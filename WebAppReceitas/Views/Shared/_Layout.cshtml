@@ -5,8 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Index</title>
-    <link rel="stylesheet" href="~/assets/dist/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <!--Css Site-->
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/Login.css">
@@ -16,7 +15,7 @@
 
 <body>
     <div class="cont">
-        <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom box-shadow">
+        <nav class="navbar p-3 navbar-expand-md navbar-light bg-white border-bottom box-shadow">
             <div class="container">
                 <a id="titulo" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebReceitas</a>
                 <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
@@ -24,10 +23,10 @@
                         <li class="nav-item">
                             <a id="menu" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                    </ul>                    
+                    </ul>
                 </div>
             </div>
-                <a asp-action="Login" type="button" id="login" class="navbar-collapse btn btn-outline-dark btn-sm text-right order-md-last" style="width: 50px;margin-right: 50px;">Login</a>
+            <a asp-action="Login" id="login" class=" btn btn-outline-dark btn-md" style="margin-right: 110px;">Login</a>
         </nav>
         <div>
             <main role="main" class="pb-3">
@@ -41,8 +40,8 @@
         <p class="link"><span>© 2020 All rights Reserved</span></p>
     </div>
 
-    <script src="~/assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <script src="~/js/site.js" asp-append-version="true"></script>

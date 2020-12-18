@@ -4,17 +4,22 @@
     ViewData["Title"] = "EsqueciSenha";
 }
 <style>
-    main{
+    main {
         margin-top: 80px;
-        margin-bottom: 120px;
+    }
+    hr{
+        background-color: #fff;
+    }
+    h2{
+        color: #fff !important;
     }
 </style>
 
 <div class="container signup-form">
 
-<h2 style="color: white;">Esqueci a Senha</h2>
+<h2>Esqueci a Senha</h2>
 
-<hr style="color: #fff;height: 2px;"/>
+<hr/>
         <form asp-action="ResetarSenha">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

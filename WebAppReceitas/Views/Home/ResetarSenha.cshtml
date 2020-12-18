@@ -5,15 +5,20 @@
 }
 
 <style>
-    main{
+    main {
         margin-top: 80px;
-        margin-bottom: 80px;
+    }
+    hr{
+        background-color: #fff;
+    }
+    h2{
+        color: #fff !important;
     }
 </style>
 
 <div class="container signup-form">
-    <h2 style="color: white;">Nova Senha</h2>
-    <hr style="color: #fff;height: 2px;"/>
+    <h2>Nova Senha</h2>
+    <hr/>
         <form asp-action="Confirmacao">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

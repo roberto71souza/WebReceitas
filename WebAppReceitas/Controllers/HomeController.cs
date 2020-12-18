@@ -23,6 +23,27 @@ namespace WebAppReceitas.Controllers
             return View();
         }
 
+        public IActionResult Perfil()
+        {
+            return View();
+        }
+        public IActionResult Partial_Postar()
+        {
+            return View();
+        }
+        public IActionResult Partial_Visualizar()
+        {
+            return View();
+        }
+        public IActionResult Partial_Editar()
+        {
+            return View();
+        }
+        public IActionResult Partial_Delete()
+        {
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View();

@@ -9,6 +9,10 @@ body {
     vertical-align: baseline;
 }
 
+main {
+    min-height: 600px;
+}
+
 ul {
     list-style: none;
     margin: 0px;
@@ -23,14 +27,13 @@ a {
 
 #titulo{
     font-family: "Cooper Black";
-    font-size: 2em;
+    font-size: 3.0em;
     color:#376833;
 }
 
 #menu{
     font-size: 25px;
 }
-
 
 .clear {
     clear: both;
@@ -271,5 +274,9 @@ nav ul li a {
     #login{
         position: absolute;
         right: 0;
+        margin-right: 30px !important;
+    }
+    #titulo{
+        font-size: 2em;
     }
 }
