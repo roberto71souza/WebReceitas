@@ -33,7 +33,8 @@ namespace WebAppReceitas.Controllers
         }
         public IActionResult Partial_Visualizar()
         {
-            return View();
+            var receita = new ReceitaModel { Id = 1, Titulo = "Camarao fresco", Conteudo = "1- kilo de camarao,1-cebola, manjericao", Acessório = "uma pa", Data_Publicacao = DateTime.Now };
+            return View(receita);
         }
         public IActionResult Partial_Editar()
         {
