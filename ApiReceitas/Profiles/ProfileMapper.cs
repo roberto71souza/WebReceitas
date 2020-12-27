@@ -1,4 +1,4 @@
-﻿using ApiReceitas.Dtos;
+﻿using ApiReceitas.Models;
 using AutoMapper;
 using Dominio;
 using System;
@@ -12,10 +12,8 @@ namespace ApiReceitas.Profiles
     {
         public ProfileMapper()
         {
-            CreateMap<Usuario, UsuarioDto>().ReverseMap();
-
-            CreateMap<Receita, ReceitaDto>().ReverseMap();
-
+            CreateMap<Receita,ReceitaModel>().ReverseMap();
+            CreateMap<Usuario, UsuarioModel>().ReverseMap();
         }
     }
 }

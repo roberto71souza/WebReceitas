@@ -20,9 +20,7 @@ namespace Dominio
         [MinLength(3, ErrorMessage = "{0} devera conter no minimo 3 palavras")]
 
         public string Acessório { get; set; }
-
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy")]
-        public DateTime Data_Publicacao { get; set; }
+        public string Data_Publicacao { get; set; }
         public Usuario Usuario { get; set; }
     }
 }

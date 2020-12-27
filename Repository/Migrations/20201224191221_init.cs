@@ -28,12 +28,12 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Data_Nascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Data_Nascimento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -164,10 +164,10 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Conteudo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Acessório = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Data_Publicacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Acessório = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Data_Publicacao = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

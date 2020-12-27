@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApiReceitas.Dtos;
+using ApiReceitas.Models;
 using AutoMapper;
 using Dominio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
-using static ApiReceitas.Startup;
 
 namespace ApiReceitas.Controllers
 {
@@ -20,16 +19,15 @@ namespace ApiReceitas.Controllers
         public IReceitasRepository _receitaApp { get; private set; }
         public IMapper _mapper { get; private set; }
 
-        public ReceitaController(ServiceResolver receitaApp, IMapper mapper)
+        public ReceitaController(IReceitasRepository receitaApp, IMapper mapper)
         {
-            _receitaApp = receitaApp("receita");
+            _receitaApp = receitaApp;
             _mapper = mapper;
         }
 
-
         // GET: ReceitaController
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReceitaDto>>> Get()
+        public async Task<ActionResult<IEnumerable<ReceitaModel>>> Get()
         {
             try
             {
@@ -38,7 +36,27 @@ namespace ApiReceitas.Controllers
                 {
                     return NoContent();
                 }
-                var mapResult = _mapper.Map<IEnumerable<ReceitaDto>>(result);
+                var mapResult = _mapper.Map<IEnumerable<ReceitaModel>>(result);
+                return Ok(mapResult);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+            }
+        }
+
+        // GET: ReceitaController
+        [HttpGet("{id}", Name = "GetId")]
+        public async Task<ActionResult<ReceitaModel>> GetId(int id)
+        {
+            try
+            {
+                var result = await _receitaApp.BuscaID(id);
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                var mapResult = _mapper.Map<ReceitaModel>(result);
                 return Ok(mapResult);
             }
             catch (Exception e)
@@ -48,30 +66,29 @@ namespace ApiReceitas.Controllers
         }
 
         //Get : id
-        [HttpGet("{id}", Name = "GetId")]
-        public async Task<ActionResult> GetId(int id)
+        [HttpGet("GetUsuarioReceitas/{id}", Name = "GetUsuarioReceitas")]
+        public async Task<ActionResult<IEnumerable<ReceitaModel>>> GetUsuarioReceitas(int id)
         {
             try
             {
-                var result = await _receitaApp.BuscaID(id);
+                var result = await _receitaApp.ListarReceitasUsuario(id);
 
                 if (result == null)
                 {
                     return NotFound();
                 }
-                var mapResult = _mapper.Map<ReceitaDto>(result);
+                var mapResult = _mapper.Map<ReceitaModel[]>(result);
                 return Ok(mapResult);
             }
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
             }
-
         }
 
         // Post: ReceitaController/Create
         [HttpPost]
-        public async Task<ActionResult<ReceitaDto>> Adicionar(ReceitaDto modelo)
+        public async Task<ActionResult<ReceitaModel>> Adicionar(ReceitaModel modelo)
         {
             try
             {
@@ -79,9 +96,9 @@ namespace ApiReceitas.Controllers
 
                 await _receitaApp.Adicionar(resultMap);
 
-                _mapper.Map(modelo, resultMap);
+                _mapper.Map(resultMap,modelo);
 
-                return CreatedAtRoute(nameof(GetId), new { Id = modelo.Id }, modelo);
+                return Created($"Receita/GetById/{modelo.Id}",modelo);
             }
             catch (Exception e)
             {
@@ -91,7 +108,7 @@ namespace ApiReceitas.Controllers
 
         // Put: ReceitaController/Put
         [HttpPut("{id}")]
-        public async Task<ActionResult<ReceitaDto>> Editar(int id, ReceitaDto modelo)
+        public async Task<ActionResult<ReceitaModel>> Editar(int id, ReceitaModel modelo)
         {
             try
             {
@@ -130,7 +147,7 @@ namespace ApiReceitas.Controllers
                 }
                await _receitaApp.Deletar(resultModelo);
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {

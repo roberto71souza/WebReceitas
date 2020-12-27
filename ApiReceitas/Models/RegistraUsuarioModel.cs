@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiReceitas.Dtos
+namespace ApiReceitas.Models
 {
-    public class RegistraUsuarioDto
+    public class RegistraUsuarioModel
     {
         [Required(ErrorMessage = "{0} e requerido"),
          MinLength(3, ErrorMessage = "{0} minimo 3 caracteres")]

@@ -23,6 +23,12 @@ namespace Repository
             return lista;
         }
 
+        public async Task<object> ListarReceitasUsuario(int id)
+        {
+            var result = await _contexto.Receitas.Where(x => x.Usuario.Id == id).Include(d => d.Usuario).AsNoTracking().ToListAsync();
+            return result;
+        }
+
         public async Task<object> BuscaID(int id)
         {
             var result = await _contexto.Receitas.Where(x => x.Id == id).Include(d => d.Usuario).AsNoTracking().FirstOrDefaultAsync();
@@ -32,31 +38,30 @@ namespace Repository
         public Task Adicionar(object modelo)
         {
             _contexto.Add(modelo);
-            var mo = new Receita();
+            var modelReceita = (Receita)modelo;
+            _contexto.Entry(modelReceita.Usuario).State = EntityState.Unchanged;
 
-            mo = (Receita)modelo;
-            _contexto.Entry(mo.Usuario).State = EntityState.Unchanged;
-           return Task.FromResult(_contexto.SaveChanges());
+            _contexto.SaveChanges();
+            return Task.CompletedTask;
         }
 
         public Task Atualizar(object modelo)
         {
-            var mo = new Receita();
-            mo = (Receita)modelo;
-            var entity = _contexto.Receitas.Find(mo.Id);
+            var modelReceita = (Receita)modelo;
+            var entity = _contexto.Receitas.Find(modelReceita.Id);
             if (entity == null)
             {
-                return Task.FromResult(entity);
+                return Task.CompletedTask;
             }
             _contexto.Entry(entity).CurrentValues.SetValues(modelo);
-
-            return Task.FromResult(_contexto.SaveChanges());
+            _contexto.SaveChanges();
+            return Task.CompletedTask;
         }
 
         public Task Deletar<T>(T modelo)
         {
             _contexto.Remove(modelo);
-           return Task.FromResult(_contexto.SaveChanges());
+            return Task.FromResult(_contexto.SaveChanges());
         }
     }
 }

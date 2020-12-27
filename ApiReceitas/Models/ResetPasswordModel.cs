@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiReceitas.Dtos
+namespace ApiReceitas.Models
 {
-    public class ResetPasswordDto
+    public class ResetPasswordModel
     {
         public string Token { get; set; }
         public string Email { get; set; }

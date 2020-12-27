@@ -24,10 +24,7 @@ namespace Dominio
 
         [MaxLength(20, ErrorMessage = "{0} Maximo 20 caracteres")]
         public string Estado { get; set; }
-
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy")]
-        public DateTime Data_Nascimento { get; set; }
-
+        public string Data_Nascimento { get; set; }
         public List<Receita> Receitas { get; set; }
 
     }

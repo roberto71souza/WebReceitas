@@ -7,7 +7,8 @@ namespace Repository
 {
     public interface IReceitasRepository
     {
-        public Task<IEnumerable<object>> Listar() ;
+        public Task<IEnumerable<object>> Listar();
+        public Task<object> ListarReceitasUsuario(int id);
         public Task<object> BuscaID(int id);
         public Task Adicionar(object modelo);
         public Task Atualizar(object modelo);

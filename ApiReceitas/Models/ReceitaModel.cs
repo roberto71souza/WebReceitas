@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiReceitas.Dtos
+namespace ApiReceitas.Models
 {
-    public class ReceitaDto
+    public class ReceitaModel
     {
         public int Id { get; set; }
 
@@ -14,10 +14,10 @@ namespace ApiReceitas.Dtos
         [Required(ErrorMessage = "{0} e requerido"),
                 MinLength(5, ErrorMessage = "{0} devera ter no minimo 5 caracteres")]
         public string Conteudo { get; set; }
-        
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy")]
-        public DateTime Data_Publicacao { get; set; }
 
-        public UsuarioDto Usuario { get; set; }
+        [MinLength(3, ErrorMessage = "{0} devera conter no minimo 3 palavras")]
+        public string Acessório { get; set; }
+        public string Data_Publicacao { get; set; }
+        public UsuarioModel Usuario { get; set; }
     }
 }

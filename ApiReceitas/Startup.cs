@@ -3,18 +3,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Dominio;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Authentication;
+using AutoMapper;
+using ApiReceitas.Profiles;
 
 namespace ApiReceitas
 {
     public class Startup
     {
-        public delegate IReceitasRepository ServiceResolver(string key);
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +29,15 @@ namespace ApiReceitas
         {
             services.AddControllers();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //Mapeamento
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ProfileMapper());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -37,6 +47,11 @@ namespace ApiReceitas
             services.AddDbContext<ReceitasContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConnectionSQL")));
 
             services.AddScoped<IReceitasRepository, ReceitasApp>();
+
+            // Hosting doesn't add IHttpContextAccessor by default
+            services.AddHttpContextAccessor();
+
+            services.TryAddSingleton<ISystemClock, SystemClock>();
 
             services.AddIdentityCore<Usuario>(opt =>
             {
@@ -48,19 +63,21 @@ namespace ApiReceitas
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequiredLength = 5;
 
-                opt.Lockout.MaxFailedAccessAttempts = 3;
+                opt.Lockout.MaxFailedAccessAttempts = 6;
                 opt.Lockout.AllowedForNewUsers = true;
             })
                 .AddEntityFrameworkStores<ReceitasContext>()
+                .AddSignInManager<SignInManager<Usuario>>()
                 .AddDefaultTokenProviders();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                     opt.TokenLifespan = TimeSpan.FromHours(3));
 
-            /*Lado MVC quando nao estiver logado ele procura options.LoginPath = "/Home/Login"*/
+            /*Lado MVC quando nao estiver logado ele procura options.LoginPath = "/Home/Login"
             services.ConfigureApplicationCookie(options =>
-            options.LoginPath = "/Home/Login");
+            options.LoginPath = "/Home/Login");*/
 
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,9 +90,7 @@ namespace ApiReceitas
 
             app.UseAuthentication();
 
-            app.UseStaticFiles();
-
-            app.UseHttpsRedirection();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod());
 
             app.UseRouting();
 
