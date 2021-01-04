@@ -1,5 +1,6 @@
 ﻿using ApiReceitas.Models;
 using Dominio;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace ApiReceitas.Controllers
     {
 
         private SignInManager<Usuario> _signIn { get; }
+
         public UserManager<Usuario> _userManager { get; }
 
         public LoginController(SignInManager<Usuario> signInManager, UserManager<Usuario> userManager)
@@ -48,7 +50,7 @@ namespace ApiReceitas.Controllers
                         {
                             await _userManager.ResetAccessFailedCountAsync(user);
 
-                            return RedirectToAction("GetUsuarioReceitas", "Receita", new { user.Id });
+                            return Ok(user);
                         }
                         else
                         {

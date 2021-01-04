@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model LoginModel
 @{
 }
 <style>
@@ -8,20 +6,23 @@
         margin-top: 80px;
     }
 </style>
+
 <div class="container signup-form">
-    <form>
+    <form asp-action="Login">
         <h2>LOGIN</h2>
+        <div asp-validation-summary="ModelOnly" class="p-3 mb-2 bg-success text-white"></div>
+
         <br>
         <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email" required="required">
+            <input type="email" asp-for="UserName" class="form-control" placeholder="Email" required="required">
         </div>
 
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Senha" required="required">
+            <input type="password" asp-for="Password" class="form-control" placeholder="Senha" required="required">
         </div>
 
         <div class="form-group">
-            <button type="submit" asp-action="Perfil" class="btns btn btn-primary btn-lg">Entrar</button>
+            <button type="submit" class="btns btn btn-primary btn-lg">Entrar</button>
         </div>
 
         <div class="form-group">
@@ -31,3 +32,6 @@
         </div>
     </form>
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

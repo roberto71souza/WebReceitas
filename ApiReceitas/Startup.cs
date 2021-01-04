@@ -63,7 +63,8 @@ namespace ApiReceitas
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequiredLength = 5;
 
-                opt.Lockout.MaxFailedAccessAttempts = 6;
+                opt.Lockout.MaxFailedAccessAttempts = 7;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 opt.Lockout.AllowedForNewUsers = true;
             })
                 .AddEntityFrameworkStores<ReceitasContext>()
@@ -72,10 +73,6 @@ namespace ApiReceitas
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                     opt.TokenLifespan = TimeSpan.FromHours(3));
-
-            /*Lado MVC quando nao estiver logado ele procura options.LoginPath = "/Home/Login"
-            services.ConfigureApplicationCookie(options =>
-            options.LoginPath = "/Home/Login");*/
 
             services.AddCors();
         }
@@ -87,7 +84,6 @@ namespace ApiReceitas
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseAuthentication();
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod());

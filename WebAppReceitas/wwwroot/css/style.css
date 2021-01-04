@@ -25,13 +25,13 @@ a {
     text-decoration: none;
 }
 
-#titulo{
+#titulo {
     font-family: "Cooper Black";
     font-size: 3.0em;
-    color:#376833;
+    color: #376833;
 }
 
-#menu{
+#menu {
     font-size: 25px;
 }
 
@@ -43,7 +43,7 @@ a {
 
 .navbar .navbar-nav {
     display: inline-flex;
-   }
+}
 
 /*---start-wrap*/
 
@@ -78,14 +78,16 @@ a {
     border-radius: 20px;
 }
 
-.pagin li a{
+.pagin li a {
     color: #376833;
 }
-.active a{
+
+.active a {
     background-color: #6ec965 !important;
     border: none !important;
 }
-.pagin li a:hover{
+
+.pagin li a:hover {
     color: #275323 !important;
 }
 
@@ -132,7 +134,7 @@ nav ul li a {
     margin-left: 2%;
 }
 
-.bloger-content h2{
+.bloger-content h2 {
     font-family: 'Carrois Gothic SC', sans-serif;
     font-size: 22px;
     color: #376833;
@@ -271,12 +273,17 @@ nav ul li a {
     .cont {
         border-radius: 0px 0px 30px 30px;
     }
-    #login{
-        position: absolute;
-        right: 0;
-        margin-right: 30px !important;
+    #menu {
+        margin-left: -25px;
     }
-    #titulo{
-        font-size: 2em;
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+    }
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+    #titulo {
+        font-size: 3.2em;
     }
 }

@@ -1,4 +1,4 @@
-@model WebAppReceitas.Models.ReceitaModel
+@model IEnumerable<WebAppReceitas.Models.ReceitaModel>
 @{
     ViewData["Title"] = "Perfil";
 }
@@ -32,13 +32,13 @@
                 <th scope="col" class="text-center">Opcoes</th>
             </tr>
         </thead>
-        @for (int i = 0; i < 40; i++)
+        @foreach (var modelo in Model)
         {
-                    <tbody>
+        <tbody>
             <tr class="table-light">
-                <th scope="row">1</th>
-                <td>macarrao com salmao, acompanha vinho tinto</td>
-                <td>16/12/2020</td>
+                <th scope="row">@modelo.Id</th>
+                <td>@modelo.Titulo</td>
+                <td>@modelo.Data_Publicacao</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Exemplo básico">
                         <a class="visualizar btn btn-info btn-sm">Visualizar</a>

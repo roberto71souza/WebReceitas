@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{
+    var id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,21 +16,51 @@
     <!-- Css Carrousel -->
     <link href="~/css/carousel.css" rel="stylesheet">
 </head>
+<style>
+
+</style>
 
 <body>
     <div class="cont">
-        <nav class="navbar p-3 navbar-expand-md navbar-light bg-white border-bottom box-shadow">
-            <div class="container">
-                <a id="titulo" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebReceitas</a>
-                <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a id="menu" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <nav class="navbar p-3 navbar-expand-md navbar-light bg-white border-bottom box-shadow justify-content-center">
+            <a id="titulo" class="navbar-brand d-flex ml-5" asp-controller="Home" asp-action="Index">WebReceitas</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100" id="collapsingNavbar3" id="collapsingNavbar">
+                <ul class="navbar-nav w-100 justify-content-center">
+                    <li class="nav-item ml-5">
+                        <a id="menu" class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto w-100">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-outline-dark dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ola @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <form method="post">
+                                    <a asp-action="Perfil" asp-route-id="@id" class="dropdown-item">Perfil</a>
+                                </form>
+                                <div class="dropdown-divider"></div>
+                                <form method="get">
+                                    <a asp-action="SignOut" class="dropdown-item">Sair</a>
+                                </form>
+                            </div>
                         </li>
-                    </ul>
-                </div>
+                    }
+                    else
+                    {
+                        <li class="login nav-item m-auto">
+                            <a asp-action="Login" class=" btn btn-outline-dark btn-md">Login</a>
+                        </li>
+                    }
+                </ul>
             </div>
-            <a asp-action="Login" id="login" class=" btn btn-outline-dark btn-md" style="margin-right: 110px;">Login</a>
         </nav>
         <div>
             <main role="main" class="pb-3">
