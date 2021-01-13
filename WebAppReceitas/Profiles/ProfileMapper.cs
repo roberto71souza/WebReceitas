@@ -9,6 +9,7 @@ namespace WebAppReceitas.Profiles
         public ProfileMapper()
         {
             CreateMap<Receita,ReceitaModel>().ReverseMap();
+            CreateMap<Usuario,UsuarioModel>().ReverseMap();
         }
     }
 }

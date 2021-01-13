@@ -12,8 +12,7 @@ namespace WebAppReceitas.Models
         public string Email { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
-        public DateTime Data_Nascimento { get; set; }
-
-        public List<Receita> Receitas { get; set; }
+        public string Data_Nascimento { get; set; }
+        public List<ReceitaModel> Receitas { get; set; }
     }
 }

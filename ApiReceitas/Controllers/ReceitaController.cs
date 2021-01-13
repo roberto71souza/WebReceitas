@@ -32,6 +32,7 @@ namespace ApiReceitas.Controllers
             try
             {
                 var result = await _receitaApp.Listar();
+
                 if (result.Count() <= 0)
                 {
                     return NoContent();
@@ -41,7 +42,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
 
@@ -52,6 +53,7 @@ namespace ApiReceitas.Controllers
             try
             {
                 var result = await _receitaApp.BuscaID(id);
+
                 if (result == null)
                 {
                     return NoContent();
@@ -61,7 +63,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
 
@@ -82,7 +84,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
 
@@ -102,7 +104,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
 
@@ -129,7 +131,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
 
@@ -151,7 +153,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro System: \n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
             }
         }
     }

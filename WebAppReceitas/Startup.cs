@@ -28,7 +28,13 @@ namespace WebAppReceitas
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            )
+                .AddNToastNotifyNoty(new NToastNotify.NotyOptions()
+                {
+                    ProgressBar= true,
+                    Timeout = 7000,
+                    Theme  = "mint"
+                });
 
             //Mapeamento
             var mappingConfig = new MapperConfiguration(mc =>
@@ -48,16 +54,17 @@ namespace WebAppReceitas
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseNToastNotify();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
+
             app.UseAuthentication();
 
             app.UseStaticFiles();

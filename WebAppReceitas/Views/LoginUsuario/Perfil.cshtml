@@ -1,0 +1,92 @@
+@model IEnumerable<WebAppReceitas.Models.ReceitaModel>
+@{
+    ViewData["Title"] = "Perfil";
+
+}
+<style>
+    main {
+        margin-top: 80px;
+    }
+
+    .container {
+        border-left: solid 3px #fff !important;
+    }
+
+    hr {
+        background-color: #fff;
+    }
+
+    .modal-content {
+        background-color: #275323;
+    }
+    
+    .modal-title,
+    .modal-body {
+        color: white;
+    }
+</style>
+
+<div class="container col-md-6 table-responsive-sm">
+    <div>
+        <a onclick="ShowInModal('@Url.Action("Partial_Postar","LoginUsuario",null,Context.Request.Scheme)','Postar receita')"
+            class="postar btn btn-light" style="float: right;">
+            Postar
+        </a>
+        <h2 style="color: white;float: left;">Minhas Receitas</h2>
+        <div class="clear"> </div>
+    </div>
+    <hr>
+
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr class="bg-warning">
+                <th scope="col">Id</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Data</th>
+                <th scope="col" class="text-center">Opcoes</th>
+            </tr>
+        </thead>
+        @foreach (var modelo in Model)
+        {
+            <tbody>
+                <tr class="table-light">
+                    <th scope="row">@modelo.Id</th>
+                    <td>@modelo.Titulo</td>
+                    <td>@modelo.Data_Publicacao</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Exemplo básico">
+                            <a onclick="ShowInModal('@Url.Action("Partial_Visualizar","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)','Visualizar Receita')"
+                                class="visualizar btn btn-info btn-sm">Visualizar</a>
+                            <a onclick="ShowInModal('@Url.Action("Partial_Editar","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)','Editar Receita')"
+                                class="editar btn btn-warning btn-sm">Alterar</a>
+                            <a onclick="ShowInModal('@Url.Action("Partial_Delete","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)',null)"
+                                class="deletar btn btn-danger btn-sm">Deletar</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+    </table>
+</div>
+
+<!-- Início modal grupo -->
+<div class="modal fade" data-backdrop="static" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

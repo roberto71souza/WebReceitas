@@ -1,5 +1,4 @@
-﻿using Dominio;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using WebAppReceitas.Models;
 using Newtonsoft.Json;
@@ -15,7 +14,7 @@ namespace WebAppReceitas.Services
 
         public async Task<object> UsuarioLogin(LoginModel model)
         {
-            var usuario = new Usuario();
+            var usuario = new UsuarioModel();
 
             using (var httpClient = new HttpClient())
             {
@@ -25,14 +24,12 @@ namespace WebAppReceitas.Services
                     if (response.IsSuccessStatusCode)
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        usuario = JsonConvert.DeserializeObject<Usuario>(apiResponse);
+                        usuario = JsonConvert.DeserializeObject<UsuarioModel>(apiResponse);
                         return usuario;
-
                     }
                     else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.InternalServerError)
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        throw new Exception(apiResponse);
+                        throw new Exception();
                     }
                     else
                     {
@@ -43,5 +40,6 @@ namespace WebAppReceitas.Services
                 }
             }
         }
+        
     }
 }

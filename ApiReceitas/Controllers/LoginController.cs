@@ -31,7 +31,6 @@ namespace ApiReceitas.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-
                 if (user != null)
                 {
                     var confirmEmail = await _userManager.IsEmailConfirmedAsync(user);
@@ -49,7 +48,6 @@ namespace ApiReceitas.Controllers
                         if (userPass.Succeeded)
                         {
                             await _userManager.ResetAccessFailedCountAsync(user);
-
                             return Ok(user);
                         }
                         else
@@ -64,7 +62,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Erro :\n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API:\n {e},\n Codigo:{this.Response.StatusCode}");
             }
         }
 
@@ -106,7 +104,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Erro :\n {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API:\n {e}");
             }
         }
 
@@ -130,7 +128,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Erro : {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
             }
         }
 
@@ -150,7 +148,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Erro : {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
             }
         }
 
@@ -178,7 +176,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Erro : {e}");
+                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
             }
         }
     }

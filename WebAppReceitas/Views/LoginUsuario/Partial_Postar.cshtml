@@ -1,0 +1,29 @@
+﻿@model WebAppReceitas.Models.ReceitaModel
+
+@{
+    Layout = null;
+}
+<style>
+    textarea {
+        min-height: 200px;
+    }
+</style>
+
+<form asp-controller="LoginUsuario" asp-action="Partial_Postar" method="POST">
+    <div class="form-group">
+        <label asp-for="@Model.Titulo" class="col-form-label">Titulo:</label>
+        <input asp-for="@Model.Titulo" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Conteudo" class="col-form-label">Conteudo:</label>
+        <textarea asp-for="@Model.Conteudo" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Conteudo" class="col-form-label">Acessorios:</label>
+        <input asp-for="@Model.Acessório" type="text" class="form-control">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-dismiss="modal">fechar</button>
+        <button type="submit" class="btn btn-light">Postar</button>
+    </div>
+</form>

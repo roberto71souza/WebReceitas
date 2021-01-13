@@ -2,3 +2,14 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+ShowInModal = (url, title, id) => {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (res) {
+            $("#exampleModal .modal-body").html(res);
+            $("#exampleModal .modal-title").html(title);
+            $("#exampleModal").modal('show');
+        }
+    });
+};

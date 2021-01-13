@@ -116,21 +116,19 @@ nav ul li a {
     font-family: 'Carrois Gothic SC', sans-serif;
     font-size: 37px;
     color: #941fac;
-    text-align: center;
     padding: 10px 0px;
 }
 
 .bloger-grid {
     width: 76%;
-    float: left;
     padding-bottom: 20px;
     border-bottom: 1px ridge rgb(241, 241, 241);
     padding: 20px 0px 20px 20px;
 }
 
 .bloger-content {
-    float: left;
-    width: 53%;
+    float: right;
+    width: 70%;
     margin-left: 2%;
 }
 
@@ -195,9 +193,10 @@ nav ul li a {
 /*-----side-bar----*/
 
 .services-sidebar {
-    float: right;
-    width: 19%;
+    float: left;
+    width: 20%;
     padding-top: 20px;
+    margin-left: 10px;
 }
 
 .services-sidebar h4 {
@@ -232,7 +231,8 @@ nav ul li a {
         width: 24%;
     }
     .bloger-grid {
-        width: 100%;
+        width: 60%;
+        margin: 0 auto;
     }
     .bloger-content {
         float: left;
@@ -253,9 +253,6 @@ nav ul li a {
     .wrap {
         width: 90%;
     }
-    .bloder-content {
-        width: 100%;
-    }
     .blog-box1 {
         width: 88.6%;
     }
@@ -263,7 +260,7 @@ nav ul li a {
         width: 100%;
     }
     .bloger-content {
-        width: 80%;
+        width: 100%;
         margin: 0px;
     }
     .bloger-content ul li:last-child {

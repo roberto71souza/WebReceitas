@@ -6,7 +6,7 @@
 }
 <div class="container signup-form">
 
-    <form action="/examples/actions/confirmation.php" method="post">
+    <form asp-action="Registrar" asp-controller="LoginUsuario" method="post">
         <h2>Registrar</h2>
         <p>Digite seus dados para fazer-mos seu cadastro!</p>
         <hr>
@@ -42,5 +42,5 @@
             <button type="submit" class="btn btn-primary btn-lg">Cadastrar</button>
         </div>
     </form>
-    <div class="hint-text"><p>Tem uma conta? <a asp-action="Login">Clique aqui</a> </p></div>
+    <div class="hint-text"><p>Tem uma conta? <a asp-action="Login" asp-controller="LoginUsuario">Clique aqui</a> </p></div>
 </div>
