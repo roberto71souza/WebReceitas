@@ -1,13 +1,11 @@
-﻿using Dominio;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace WebAppReceitas.Models
 {
     public class Email
     {
-
-        public static async Task Enviar(Usuario usuario,string subj,string link)
+        public static async Task Enviar(RegistraUsuarioModel usuario, string subj, string link)
         {
             string _email = usuario.Email;
             string _subject = subj;

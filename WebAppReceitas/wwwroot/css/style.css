@@ -70,24 +70,25 @@ a {
 
 /*---page-nations-----*/
 
-.pagin {
-    max-width: 250px;
+.navigation {
+    max-width: 320px;
     margin: 10px auto;
     background-color: #ffffff;
-    text-align: center;
+    justify-content: center;
     border-radius: 20px;
 }
 
-.pagin li a {
+.pagination li a {
     color: #376833;
 }
 
-.active a {
+.page-item.active .page-link {
+
     background-color: #6ec965 !important;
-    border: none !important;
+    border-color: #6ec965 !important;
 }
 
-.pagin li a:hover {
+.pagination li a:hover {
     color: #275323 !important;
 }
 

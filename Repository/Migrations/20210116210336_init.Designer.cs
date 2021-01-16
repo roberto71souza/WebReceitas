@@ -10,7 +10,7 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ReceitasContext))]
-    [Migration("20201224191221_init")]
+    [Migration("20210116210336_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

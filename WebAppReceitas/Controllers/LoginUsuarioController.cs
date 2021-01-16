@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using WebAppReceitas.Models;
 using WebAppReceitas.Services;
 
@@ -18,14 +19,16 @@ namespace WebAppReceitas.Controllers
     public class LoginUsuarioController : Controller
     {
         public LoginService _loginService { get; set; }
+        public RegistroService _registroService { get; set; }
         public ReceitaService _receitaService { get; set; }
         public IToastNotification _toast { get; }
         public IMapper _mapper { get; set; }
-        public LoginUsuarioController(LoginService login, ReceitaService receita, IToastNotification toast, IMapper mapper)
+        public LoginUsuarioController(LoginService login, ReceitaService receita, RegistroService registro, IToastNotification toast, IMapper mapper)
         {
             _mapper = mapper;
             _loginService = login;
             _receitaService = receita;
+            _registroService = registro;
             _toast = toast;
         }
 
@@ -72,7 +75,7 @@ namespace WebAppReceitas.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 400 });
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
             }
             return View();
         }
@@ -108,12 +111,66 @@ namespace WebAppReceitas.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 400 });
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
             }
         }
+
+        [HttpGet]
         public IActionResult Registrar()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registrar(RegistraUsuarioModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool token, unath;
+                    var result = await _registroService.RegistrarUsuario(model, out token, out unath);
+
+                    if (token)
+                    {
+                        var urlResult = Url.Action("ConfirmarEmail", "LoginUsuario",
+                            new { token = result, email = model.Email }, Request.Scheme);
+                        await Email.Enviar(model, "Confirmacao de email - WebReceitas", urlResult);
+                        return RedirectToAction("Confirmacao", new { mensagem = "Usuario cadastrado, agora para validar seu cadastro verifique o email que te enviaremos" });
+                    }
+                    else
+                    {
+                        _toast.AddErrorToastMessage($"{result}");
+                        return View();
+                    }
+                }
+                string messages = string.Join(".<br/>\r\n ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+
+                _toast.AddErrorToastMessage(String.Join("<br/>\r\n", "Erro ao cadastrar Usuario !!!", messages));
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmarEmail(string token, string email)
+        {
+            var result = await _registroService.VerificaEmail(token, email);
+            if (result)
+            {
+                return RedirectToAction("Confirmacao", new { mensagem = "Usuario validado, agora vc pode logar no sistema!!" });
+            }
+            else
+            {
+                _toast.AddErrorToastMessage($"Erro ao validar");
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
@@ -132,7 +189,7 @@ namespace WebAppReceitas.Controllers
                     var idUser = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                     modelo.Data_Publicacao = DateTime.Now.ToString("dd/MM/yyyy");
-                    modelo.Usuario = new UsuarioModel{Id=idUser};
+                    modelo.Usuario = new UsuarioModel { Id = idUser };
 
                     var result = await _receitaService.PostarReceita(modelo);
 
@@ -152,7 +209,7 @@ namespace WebAppReceitas.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 400 });
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
             }
         }
 
@@ -219,7 +276,7 @@ namespace WebAppReceitas.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 400 });
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
             }
         }
 
@@ -262,7 +319,7 @@ namespace WebAppReceitas.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 400 });
+                return RedirectToAction("HttpStatusCodeHandler", "Home", new { statusCode = this.Response.StatusCode = 500 });
             }
         }
 
@@ -278,7 +335,7 @@ namespace WebAppReceitas.Controllers
 
         public IActionResult Confirmacao(string mensagem)
         {
-            TempData["msg"] = $"Tudo certo !! {mensagem}";
+            TempData["msg"] = $"Tudo certo !! \n{mensagem}";
             return View();
         }
     }

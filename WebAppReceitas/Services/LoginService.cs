@@ -27,7 +27,7 @@ namespace WebAppReceitas.Services
                         usuario = JsonConvert.DeserializeObject<UsuarioModel>(apiResponse);
                         return usuario;
                     }
-                    else if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.InternalServerError)
+                    else if (response.StatusCode == HttpStatusCode.InternalServerError)
                     {
                         throw new Exception();
                     }

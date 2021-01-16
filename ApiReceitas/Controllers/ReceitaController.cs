@@ -42,7 +42,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
 
@@ -63,7 +63,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
 
@@ -84,7 +84,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
 
@@ -104,7 +104,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
 
@@ -131,7 +131,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
 
@@ -153,7 +153,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error System API: \n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error System API: \n {e}");
             }
         }
     }

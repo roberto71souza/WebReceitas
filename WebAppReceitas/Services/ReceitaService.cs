@@ -46,7 +46,6 @@ namespace WebAppReceitas.Services
         public async Task<bool> PostarReceita(ReceitaModel modelo)
         {
             var receita = new ReceitaModel();
-
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(modelo), Encoding.UTF8, "application/json");

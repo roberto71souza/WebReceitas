@@ -1,6 +1,5 @@
 ﻿using ApiReceitas.Models;
 using Dominio;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +61,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API:\n {e},\n Codigo:{this.Response.StatusCode}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error API:\n {e},\n Codigo:{this.Response.StatusCode}");
             }
         }
 
@@ -104,20 +103,21 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API:\n {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error API:\n {e}");
             }
         }
 
         [HttpGet("ConfirmEmailAddress")]
         public async Task<IActionResult> ConfirmEmailAddress(string token, string email)
         {
+            string tokenRep = token.Replace(" ", "+");
             try
             {
                 var user = await _userManager.FindByEmailAsync(email);
 
                 if (user != null)
                 {
-                    var result = await _userManager.ConfirmEmailAsync(user, token);
+                    var result = await _userManager.ConfirmEmailAsync(user, tokenRep);
 
                     if (result.Succeeded)
                     {
@@ -128,7 +128,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error API: {e}");
             }
         }
 
@@ -148,7 +148,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error API: {e}");
             }
         }
 
@@ -176,7 +176,7 @@ namespace ApiReceitas.Controllers
             }
             catch (Exception e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, $"Error API: {e}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error API: {e}");
             }
         }
     }

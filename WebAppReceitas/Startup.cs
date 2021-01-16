@@ -48,6 +48,7 @@ namespace WebAppReceitas
 
             services.AddScoped<LoginService>();
             services.AddScoped<ReceitaService>();
+            services.AddScoped<RegistroService>();
 
         }
 
