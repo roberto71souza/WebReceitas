@@ -30,6 +30,7 @@ namespace ApiReceitas.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
+
                 if (user != null)
                 {
                     var confirmEmail = await _userManager.IsEmailConfirmedAsync(user);

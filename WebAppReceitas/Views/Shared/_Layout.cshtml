@@ -16,6 +16,14 @@
     <link rel="stylesheet" href="~/css/Login.css">
     <!-- Css Carrousel -->
     <link href="~/css/carousel.css" rel="stylesheet">
+
+    <!-- Sxripts -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js?7.0.0.0" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -42,7 +50,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <form method="post">
-                                    <a asp-action="Perfil" asp-controller="LoginUsuario" asp-route-id="@id"
+                                    <a asp-action="Perfil" asp-controller="Perfil" asp-route-id="@id"
                                         class="dropdown-item">Perfil</a>
                                 </form>
                                 <div class="dropdown-divider"></div>
@@ -73,11 +81,6 @@
     <div class="footer1">
         <p class="link"><span>© 2020 All rights Reserved</span></p>
     </div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js?7.0.0.0
-        type="text/javascript"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await Component.InvokeAsync("NToastNotify")

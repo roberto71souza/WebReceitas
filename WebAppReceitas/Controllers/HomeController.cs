@@ -13,7 +13,7 @@ namespace WebAppReceitas.Controllers
     {
         public ReceitaService _receitaService { get; set; }
         public IMapper _mapper { get; set; }
-        public HomeController(LoginService login, ReceitaService receita, IMapper mapper)
+        public HomeController(ReceitaService receita, IMapper mapper)
         {
             _mapper = mapper;
             _receitaService = receita;
@@ -24,7 +24,7 @@ namespace WebAppReceitas.Controllers
             try
             {
                 var pageNumber = page ?? 1;
-                var pageSize = 1;
+                var pageSize = 3;
                 var result = await _receitaService.ListarReceitas();
                 var resultMap = _mapper.Map<IEnumerable<ReceitaModel>>(result);
 

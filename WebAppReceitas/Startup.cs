@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -25,16 +26,19 @@ namespace WebAppReceitas
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
+            services.AddHttpClient("UrlBase", client => {
+                client.BaseAddress = new Uri("https://localhost:44311/");
+            });
+
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            )
-                .AddNToastNotifyNoty(new NToastNotify.NotyOptions()
-                {
-                    ProgressBar= true,
-                    Timeout = 7000,
-                    Theme  = "mint"
-                });
+            ).AddNToastNotifyNoty(new NToastNotify.NotyOptions()
+            {
+                ProgressBar = true,
+                Timeout = 7000,
+                Theme = "mint"
+            });
 
             //Mapeamento
             var mappingConfig = new MapperConfiguration(mc =>

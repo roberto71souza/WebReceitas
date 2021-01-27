@@ -10,45 +10,46 @@ namespace WebAppReceitas.Services
 {
     public class RegistroService
     {
-        const string Url = "https://localhost:44311/Login";
+        public HttpClient _client { get => _factory.CreateClient("UrlBase"); }
+        public IHttpClientFactory _factory { get; set; }
 
-        public Task<string> RegistrarUsuario(RegistraUsuarioModel model, out bool token, out bool unath)
+        public RegistroService(IHttpClientFactory factory)
+        {
+            _factory = factory;
+        }
+
+        public Task<string> RegistrarUsuario(RegistraUsuarioModel model, out bool token, out bool erro)
         {
             token = false;
-            unath = false;
-            using (var httpClient = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-                using (var response = httpClient.PostAsync($"{Url}/Registrar", content).Result)
-                {
-                    var apiResponse = response.Content.ReadAsStringAsync().Result;
+            erro = false;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        token = true;
-                        return Task.FromResult(apiResponse);
-                    }
-                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        unath = true;
-                        return Task.FromResult(apiResponse);
-                    }
-                }
+            StringContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var response = _client.PostAsync($"Login/Registrar", content).Result;
+            var apiResponse = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                token = true;
+                return Task.FromResult(apiResponse);
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                erro = true;
+                return Task.FromResult(apiResponse);
+            }
+            else if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new Exception();
             }
             return (Task<string>)Task.CompletedTask;
         }
 
         public async Task<bool> VerificaEmail(string token, string email)
         {
-            using (var httpClient = new HttpClient())
+            var response = await _client.GetAsync($"Login/ConfirmEmailAddress/?token={token}&email={email}");
+            if (response.IsSuccessStatusCode)
             {
-                using (var response = await httpClient.GetAsync($"{Url}/ConfirmEmailAddress/?token={token}&email={email}"))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                }
+                return true;
             }
             return false;
         }

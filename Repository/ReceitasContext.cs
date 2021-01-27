@@ -24,31 +24,23 @@ namespace Repository
 
             modelBuilder.Entity<Receita>().Property(r => r.Titulo).HasMaxLength(80);
             modelBuilder.Entity<Receita>().Property(r => r.Acessório).HasMaxLength(150);
-            modelBuilder.Entity<Receita>().Property(r => r.Data_Publicacao).HasMaxLength(20);
+            modelBuilder.Entity<Receita>().Property(r => r.Data_Publicacao).HasMaxLength(15);
 
-            modelBuilder.Entity<Usuario>().Property(r => r.Nome).HasMaxLength(60);
-            modelBuilder.Entity<Usuario>().Property(r => r.UserName).HasMaxLength(60);
-            modelBuilder.Entity<Usuario>().Property(r => r.Email).HasMaxLength(60);
+            modelBuilder.Entity<Usuario>().Property(r => r.Nome).HasMaxLength(80);
+            modelBuilder.Entity<Usuario>().Property(r => r.UserName).HasMaxLength(80);
+            modelBuilder.Entity<Usuario>().Property(r => r.Email).HasMaxLength(80);
             modelBuilder.Entity<Usuario>().Property(r => r.Cidade).HasMaxLength(20);
             modelBuilder.Entity<Usuario>().Property(r => r.Estado).HasMaxLength(20);
             modelBuilder.Entity<Usuario>().Property(r => r.Data_Nascimento).HasMaxLength(20);
+            modelBuilder.Entity<Usuario>().Property(r => r.PhoneNumber).HasMaxLength(20);
+            modelBuilder.Entity<Usuario>().Property(r => r.NormalizedUserName).HasMaxLength(80);
+            modelBuilder.Entity<Usuario>().Property(r => r.NormalizedEmail).HasMaxLength(80);
 
             modelBuilder.Entity<Receita>()
                     .HasOne(b => b.Usuario)
                     .WithMany(a => a.Receitas)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
-
-            /*modelBuilder.Entity<Usuario>(key =>
-            {
-                key.ToTable("Usuario");
-                key.HasKey(x => x.Id);
-
-                key.HasMany<Receita>()
-                .WithOne()
-                .HasForeignKey(x => x.Usuario)
-                .IsRequired(false);
-            });*/
         }
     }
 }

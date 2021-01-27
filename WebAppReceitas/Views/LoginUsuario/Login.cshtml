@@ -1,6 +1,5 @@
 ﻿@model LoginModel
-@{
-}
+
 <style>
     main {
         margin-top: 80px;
@@ -28,7 +27,7 @@
         <div class="form-group">
             <a asp-action="EsqueciSenha" class="ForgetPwd text-success">Esqueci a Senha?</a>
             <br>
-            <a asp-action="Registrar" class="ForgetPwd">Cadastrar</a>
+            <a asp-action="Registrar" asp-controller="Registro" class="ForgetPwd">Cadastrar</a>
         </div>
     </form>
 </div>

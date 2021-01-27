@@ -19,7 +19,7 @@
 <div class="container signup-form">
     <h2>Nova Senha</h2>
     <hr/>
-        <form asp-action="Confirmacao">
+        <form asp-action="ResetarSenha" asp-controller="LoginUsuario" method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input asp-for="Token" class="form-control" type="hidden"/>

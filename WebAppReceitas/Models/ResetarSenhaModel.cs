@@ -14,7 +14,7 @@ namespace WebAppReceitas.Models
         [DataType(DataType.Password),Display(Name = "Nova Senha")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password), Compare("Password"),Display(Name = "Confirme a Senha")]
+        [DataType(DataType.Password), Compare("Password",ErrorMessage = "Senhas nao batem"),Display(Name = "Confirme a Senha")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -20,7 +20,7 @@
         background-color: #275323;
     }
 
-    h2{
+    h2 {
         color: white;
     }
 
@@ -32,7 +32,7 @@
 
 <div class="container col-md-6 table-responsive-sm">
     <div>
-        <a onclick="ShowInModal('@Url.Action("Partial_Postar","LoginUsuario",null,Context.Request.Scheme)','Postar receita')"
+        <a onclick="ShowInModal('@Url.Action("Partial_Postar","Perfil",null,Context.Request.Scheme)','Postar receita')"
             class="postar btn btn-light" style="float: right;">
             Postar
         </a>
@@ -61,25 +61,23 @@
                         <td>@modelo.Data_Publicacao</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Exemplo básico">
-                                <a onclick="ShowInModal('@Url.Action("Partial_Visualizar","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)','Visualizar Receita')"
+                                <a onclick="ShowInModal('@Url.Action("Partial_Visualizar","Perfil",new {id = modelo.Id},Context.Request.Scheme)','Visualizar Receita')"
                                     class="visualizar btn btn-info btn-sm">Visualizar</a>
-                                <a onclick="ShowInModal('@Url.Action("Partial_Editar","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)','Editar Receita')"
+                                <a onclick="ShowInModal('@Url.Action("Partial_Editar","Perfil",new {id = modelo.Id},Context.Request.Scheme)','Editar Receita')"
                                     class="editar btn btn-warning btn-sm">Alterar</a>
-                                <a onclick="ShowInModal('@Url.Action("Partial_Delete","LoginUsuario",new {id = modelo.Id},Context.Request.Scheme)',null)"
+                                <a onclick="ShowInModal('@Url.Action("Partial_Delete","Perfil",new {id = modelo.Id},Context.Request.Scheme)',null)"
                                     class="deletar btn btn-danger btn-sm">Deletar</a>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             }
-
         </table>
     }
     else
     {
         <h2>Voce nao tem nenhuma receita</h2>
     }
-
 </div>
 
 <!-- Início modal grupo -->
@@ -96,8 +94,6 @@
             <div class="modal-body">
 
             </div>
-
         </div>
     </div>
-
 </div>

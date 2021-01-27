@@ -6,6 +6,26 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .conteudoC {
+        white-space: pre-line;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .btn-outline-warning {
+        float: right;
+    }
+
+    li.showContent .conteudoC {
+        height: auto;
+    }
+
+    li.showContent a.btn-outline-warning {
+        color: white !important;
+        background-color: red !important;
+    }
+</style>
 
 <div class="wrap">
     <!--Carrousel-->
@@ -69,18 +89,18 @@
                 {
                     foreach (var modelo in Model)
                     {
-                        <h2><a>@modelo.Titulo</a></h2>
-                        <p style="white-space: pre-line">@modelo.Conteudo
-                            kweklfk lewjfkweeee eeeeeeee eeeeee eeeeee eeeeee. eeeee eeeeee eeeee eeee eeee
-                            eeee eeee ee eeee ee eeeee eeeee eeeeee eeeee.
-                            ee eee eeee ee eeee eee eeee eeee eeee.
-                            eeee eeeee eeeeee eeee eeeee eeeee eeeee eee eee. eeeee eee ee.
-                        </p>
                         <ul>
-                            <li><a>@modelo.Usuario.Nome</a></li>
-                            postado dia
-                            <li><a>@modelo.Data_Publicacao</a></li>
-                            <li><a href="single.html"><span>Read more</span></a></li>
+                            <h2><a>@modelo.Titulo</a></h2>
+                            <li>
+                                <p class="conteudoC">@modelo.Conteudo
+                                </p>
+                                <a href="javascript:void()" class="btn btn-outline-warning btn-sm">Leia Mais</a>
+                            </li>
+                            <li>
+                                <a>@modelo.Usuario.Nome</a>
+                                postado dia
+                                <a>@modelo.Data_Publicacao</a>
+                            </li>
                         </ul>
                         <div class="clear"> </div>
 
@@ -96,7 +116,6 @@
         </div>
         <div class="clear"> </div>
     </div>
-
 </div>
 <div class="clear"> </div>
 
@@ -114,4 +133,13 @@
         DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
         MaximumPageNumbersToDisplay = 3,
         UlElementClasses = new[] { "pagination justify-content-center" }
-    })
+    });
+
+<script>
+    $('.btn-outline-warning').on('click', function () {
+        $(this).parent().toggleClass("showContent");
+
+        var replaceText = $(this).parent().hasClass("showContent") ? "Leia Menos" : "Leia Mais";
+        $(this).text(replaceText);
+    });
+</script>

@@ -1,14 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model WebAppReceitas.Models.ReceitaModel
+﻿@model WebAppReceitas.Models.ReceitaModel
 
 @{
     Layout = null;
 }
 <h2>Deseja deletar esta receita?</h2>
 
-<form asp-controller="LoginUsuario" asp-action="Delete" method="POST">
+<form asp-controller="Perfil" asp-action="Delete" method="POST">
     <div class="form-group">
         <h6 class="mt-3">@Model.Titulo</h6>
     </div>

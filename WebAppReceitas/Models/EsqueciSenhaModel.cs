@@ -4,7 +4,7 @@ namespace WebAppReceitas.Models
 {
     public class EsqueciSenhaModel
     {
-        [EmailAddress,Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Formato Errado, ex: exemplo@exemplo.com"),Display(Name = "Email")]
         public string Email { get; set; }
     }
 }

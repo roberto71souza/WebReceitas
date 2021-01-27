@@ -29,8 +29,6 @@ namespace WebAppReceitas.Models
         [Required, DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Senhas nao batem")]
         public string ConfirmPassword { get; set; }
-
-        [DisplayFormat(DataFormatString = "dd/MM/yyyy")]
         public string Data_Nascimento { get; set; }
     }
 }
