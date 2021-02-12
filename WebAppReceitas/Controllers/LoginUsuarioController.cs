@@ -72,7 +72,7 @@ namespace WebAppReceitas.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> Deslogar()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
