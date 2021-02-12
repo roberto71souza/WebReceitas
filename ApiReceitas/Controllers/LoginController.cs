@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApiReceitas.Controllers
@@ -12,7 +13,6 @@ namespace ApiReceitas.Controllers
     [Route("[Controller]")]
     public class LoginController : ControllerBase
     {
-
         private SignInManager<Usuario> _signIn { get; }
 
         public UserManager<Usuario> _userManager { get; }
@@ -94,10 +94,13 @@ namespace ApiReceitas.Controllers
                     }
                     else
                     {
+                        List<IdentityError> erro = new List<IdentityError>();
+
                         foreach (var error in result.Errors)
                         {
-                            return BadRequest(error.Description);
+                            erro.Add(error);
                         }
+                        return BadRequest(erro.ToArray());
                     }
                 }
                 return Unauthorized("Usuario(email) ja existe no sistema");
@@ -166,10 +169,7 @@ namespace ApiReceitas.Controllers
 
                     if (!result.Succeeded)
                     {
-                        foreach (var erro in result.Errors)
-                        {
-                            return BadRequest(erro.Description);
-                        }
+                        return BadRequest("Erro ao authorizar usuario");
                     }
                     return Ok("Senha alterada com sucesso");
                 }

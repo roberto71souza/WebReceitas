@@ -8,8 +8,6 @@ using Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Dominio;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Authentication;
 using AutoMapper;
 using ApiReceitas.Profiles;
 
@@ -27,7 +25,10 @@ namespace ApiReceitas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             //Mapeamento
             var mappingConfig = new MapperConfiguration(mc =>
@@ -39,21 +40,11 @@ namespace ApiReceitas
 
             services.AddSingleton(mapper);
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
-
             services.AddDbContext<ReceitasContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConnectionSQL")));
 
             services.AddScoped<IReceitasRepository, ReceitasApp>();
 
-            // Hosting doesn't add IHttpContextAccessor by default
-            services.AddHttpContextAccessor();
-
-            services.TryAddSingleton<ISystemClock, SystemClock>();
-
-            services.AddIdentityCore<Usuario>(opt =>
+            services.AddDefaultIdentity<Usuario>(opt =>
             {
                 opt.SignIn.RequireConfirmedEmail = true;
 
@@ -70,9 +61,6 @@ namespace ApiReceitas
                 .AddEntityFrameworkStores<ReceitasContext>()
                 .AddSignInManager<SignInManager<Usuario>>()
                 .AddDefaultTokenProviders();
-
-            services.Configure<DataProtectionTokenProviderOptions>(opt =>
-                    opt.TokenLifespan = TimeSpan.FromHours(3));
 
             services.AddCors();
         }

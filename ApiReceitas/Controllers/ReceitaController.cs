@@ -15,7 +15,6 @@ namespace ApiReceitas.Controllers
     [Route("[Controller]")]
     public class ReceitaController : ControllerBase
     {
-
         public IReceitasRepository _receitaApp { get; private set; }
         public IMapper _mapper { get; private set; }
 

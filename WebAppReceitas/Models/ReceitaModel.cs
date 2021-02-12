@@ -22,9 +22,10 @@ namespace WebAppReceitas.Models
         [MinLength(3, ErrorMessage = "{0} devera conter no minimo 3 palavras")]
         public string Acessório { get; set; }
 
-        [Display(Name="Data publicacao:")]
+        [Display(Name = "Data publicacao:")]
         public string Data_Publicacao { get; set; }
         public UsuarioModel Usuario { get; set; }
+        public int UsuarioId { get; set; }
 
     }
 }

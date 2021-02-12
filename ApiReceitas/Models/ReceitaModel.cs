@@ -19,5 +19,7 @@ namespace ApiReceitas.Models
         public string Acessório { get; set; }
         public string Data_Publicacao { get; set; }
         public UsuarioModel Usuario { get; set; }
+        public int UsuarioId { get; set; }
+
     }
 }

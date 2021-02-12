@@ -22,5 +22,6 @@ namespace Dominio
         public string Acessório { get; set; }
         public string Data_Publicacao { get; set; }
         public Usuario Usuario { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿@model WebAppReceitas.Models.ReceitaModel
+﻿@using System.Security.Claims
+@model WebAppReceitas.Models.ReceitaModel
 
 @{
     Layout = null;
+    var id = int.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 }
 <style>
     textarea {
@@ -10,6 +12,7 @@
 </style>
 
 <form asp-controller="Perfil" asp-action="Partial_Editar" method="POST">
+    <input asp-for="@Model.UsuarioId" value="@id" type="hidden" class="form-control">
     <div class="form-group">
         <label asp-for="@Model.Titulo" class="col-form-label">Titulo:</label>
         <input asp-for="@Model.Titulo" type="text" class="form-control">
@@ -23,7 +26,8 @@
         <input asp-for="@Model.Acessório" type="text" class="form-control">
     </div>
     <div class="form-group">
-        <input asp-for="@Model.Data_Publicacao" value="@DateTime.Now.ToString("dd/MM/yyyy")" type="hidden" class="form-control">
+        <input asp-for="@Model.Data_Publicacao" value="@DateTime.Now.ToString("dd/MM/yyyy")" type="hidden"
+            class="form-control">
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-light" data-dismiss="modal">Fechar</button>
