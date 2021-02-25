@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebAppReceitas.Jwt;
 using WebAppReceitas.Models;
 using WebAppReceitas.Services;
 
@@ -12,6 +13,8 @@ namespace WebAppReceitas.Controllers
 {
     public class PerfilController : Controller
     {
+        public string Token { get => this.User.FindFirstValue(ClaimTypes.Authentication); }
+        public bool SessaoExpirada { get => UsuarioToken.TokenExpirado(Token); }
         public ReceitaService _receitaService { get; set; }
         public IToastNotification _toast { get; }
         public IMapper _mapper { get; set; }
@@ -29,11 +32,15 @@ namespace WebAppReceitas.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    id = int.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    var receitaUsuario = await _receitaService.ListarReceitasUsuarioId(id);
+                    if (!SessaoExpirada)
+                    {
+                        id = int.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                        var receitaUsuario = await _receitaService.ListarReceitasUsuarioId(id, Token);
 
-                    var mapResult = _mapper.Map<ReceitaModel[]>(receitaUsuario);
-                    return View(mapResult);
+                        var mapResult = _mapper.Map<ReceitaModel[]>(receitaUsuario);
+                        return View(mapResult);
+                    }
+                    return RedirectToAction("Deslogar", "LoginUsuario", new { msg = "Sessao expirada refaça o login" });
                 }
                 return RedirectToAction("Login", "LoginUsuario");
             }
@@ -46,7 +53,13 @@ namespace WebAppReceitas.Controllers
         [HttpGet]
         public IActionResult Partial_Postar()
         {
-            return View();
+            if (!SessaoExpirada)
+            {
+                return PartialView();
+            }
+            var button = $@"<p>Sessao expirada efetue o login novamente<p>
+                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
+            return Json(button);
         }
 
         [HttpPost]
@@ -56,7 +69,7 @@ namespace WebAppReceitas.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _receitaService.PostarReceita(modelo);
+                    var result = await _receitaService.PostarReceita(modelo, Token);
 
                     if (result)
                     {
@@ -83,13 +96,19 @@ namespace WebAppReceitas.Controllers
         {
             try
             {
-                var receita = await _receitaService.VisualizarReceitaId(id);
-                if (receita == null)
+                if (!SessaoExpirada)
                 {
-                    return Json("Erro ao carregar receita!!");
+                    var receita = await _receitaService.VisualizarReceitaId(id, Token);
+                    if (receita == null)
+                    {
+                        return Json("Erro ao carregar receita!!");
+                    }
+                    var receitaMap = _mapper.Map<ReceitaModel>(receita);
+                    return View(receitaMap);
                 }
-                var receitaMap = _mapper.Map<ReceitaModel>(receita);
-                return View(receitaMap);
+                var button = $@"<p>Sessao expirada efetue o login novamente<p>
+                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
+                return Json(button);
             }
             catch (Exception)
             {
@@ -102,13 +121,19 @@ namespace WebAppReceitas.Controllers
         {
             try
             {
-                var receita = await _receitaService.VisualizarReceitaId(id);
-                if (receita == null)
+                if (!SessaoExpirada)
                 {
-                    return Json("Erro ao carregar receita!!");
+                    var receita = await _receitaService.VisualizarReceitaId(id, Token);
+                    if (receita == null)
+                    {
+                        return Json("Erro ao carregar receita!!");
+                    }
+                    var receitaMap = _mapper.Map<ReceitaModel>(receita);
+                    return View(receitaMap);
                 }
-                var receitaMap = _mapper.Map<ReceitaModel>(receita);
-                return View(receitaMap);
+                var button = $@"<p>Sessao expirada efetue o login novamente<p>
+                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
+                return Json(button);
             }
             catch (Exception)
             {
@@ -123,7 +148,7 @@ namespace WebAppReceitas.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _receitaService.EditarReceita(modelo);
+                    var result = await _receitaService.EditarReceita(modelo, Token);
 
                     if (result)
                     {
@@ -150,13 +175,19 @@ namespace WebAppReceitas.Controllers
         {
             try
             {
-                var receita = await _receitaService.VisualizarReceitaId(id);
-                if (receita == null)
+                if (!SessaoExpirada)
                 {
-                    return Json("Erro ao carregar receita!!");
+                    var receita = await _receitaService.VisualizarReceitaId(id, Token);
+                    if (receita == null)
+                    {
+                        return Json("Erro ao carregar receita!!");
+                    }
+                    var receitaMap = _mapper.Map<ReceitaModel>(receita);
+                    return View(receitaMap);
                 }
-                var receitaMap = _mapper.Map<ReceitaModel>(receita);
-                return View(receitaMap);
+                var button = $@"<p>Sessao expirada efetue o login novamente<p>
+                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
+                return Json(button);
             }
             catch (Exception)
             {
@@ -171,7 +202,7 @@ namespace WebAppReceitas.Controllers
             {
                 if (id > 0)
                 {
-                    var result = await _receitaService.DeletarReceita(id);
+                    var result = await _receitaService.DeletarReceita(id, Token);
 
                     if (result)
                     {

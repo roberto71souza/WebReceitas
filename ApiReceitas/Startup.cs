@@ -10,6 +10,12 @@ using Dominio;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using ApiReceitas.Profiles;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using ApiReceitas.Jwt;
 
 namespace ApiReceitas
 {
@@ -25,11 +31,6 @@ namespace ApiReceitas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
-
             //Mapeamento
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -38,6 +39,8 @@ namespace ApiReceitas
 
             IMapper mapper = mappingConfig.CreateMapper();
 
+
+            services.AddSingleton<JwtMetodos>();
             services.AddSingleton(mapper);
 
             services.AddDbContext<ReceitasContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConnectionSQL")));
@@ -61,6 +64,31 @@ namespace ApiReceitas
                 .AddEntityFrameworkStores<ReceitasContext>()
                 .AddSignInManager<SignInManager<Usuario>>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+            services.AddControllersWithViews(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+                    .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services.AddCors();
         }

@@ -24,5 +24,8 @@ O identity foi usado com o intuito de realizar o cadastro de usuários, validaç
 # Asp Net core WebApi
 Esta e a aplicação base para outras aplicações, ela será responsável pelas respostas das requisições de outras aplicações seja elas de autenticação de login, cadastro de usuário ou outras operações com banco de dados.
 
+# Json Web Tokens
+Para dar mais segurança para a Api, foi implementado a autenticação via token, antes qualquer usuário, mesmo que não estejam logados no sistema, que possuía o endereço da Api, poderia por exemplo executar métodos de post, alteração e exclusao de receitas, agora com esta implementação, além do usuário estar logado no sistema ele terá uma autorização jwt gerada pela Api, e assim ele poderá ele poderá ser autenticado a cada requisição que ele fizer para a Api.
+
 # Asp Net Core Mvc
 A parte de visualização do projeto, através de requisições http para a Api ela obtém dados do banco de dados e exibe para o usuário.

@@ -5,23 +5,22 @@ using Newtonsoft.Json;
 using System.Text;
 using System;
 using System.Net;
-using Dominio;
+using WebAppReceitas.Jwt;
 
 namespace WebAppReceitas.Services
 {
     public class LoginService
     {
-        public IHttpClientFactory _factory { get; set; }
-        public HttpClient _client { get => _factory.CreateClient("UrlBase"); }
+        public HttpClient _client { get; set; }
 
         public LoginService(IHttpClientFactory factory)
         {
-            _factory = factory;
+            _client = factory.CreateClient("UrlBase");
         }
 
         public async Task<object> UsuarioLogin(LoginModel model)
         {
-            var usuario = new Usuario();
+            var usuario = new UsuarioTokenModel();
             StringContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("Login/Login", content);
 
@@ -31,7 +30,8 @@ namespace WebAppReceitas.Services
             {
                 return apiResponse;
             }
-            usuario = JsonConvert.DeserializeObject<Usuario>(apiResponse);
+
+            usuario = UsuarioToken.ConstruirUsuarioToken(apiResponse).Result;
 
             return usuario;
         }
@@ -47,7 +47,7 @@ namespace WebAppReceitas.Services
             {
                 var apiResponse = response.Content.ReadAsStringAsync().Result;
                 token = apiResponse;
-                
+
                 return Task.FromResult(true);
             }
             else if (response.StatusCode == HttpStatusCode.InternalServerError)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApiReceitas.Models;
 using AutoMapper;
 using Dominio;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
@@ -26,6 +27,7 @@ namespace ApiReceitas.Controllers
 
         // GET: ReceitaController
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ReceitaModel>>> Get()
         {
             try

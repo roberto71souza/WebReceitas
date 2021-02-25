@@ -1,5 +1,4 @@
-﻿using Dominio;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,11 +45,13 @@ namespace WebAppReceitas.Controllers
                 {
                     usuario = await _loginService.UsuarioLogin(model);
 
-                    if (usuario is Usuario)
+                    if (usuario is UsuarioTokenModel)
                     {
-                        var usuarioModelo = (Usuario)usuario;
-                        var claims = new List<Claim>{new Claim(ClaimTypes.Name, usuarioModelo.Nome),
-                                                new Claim(ClaimTypes.NameIdentifier, usuarioModelo.Id.ToString())};
+                        var usuarioModelo = (UsuarioTokenModel)usuario;
+                        var claims = new List<Claim>{
+                            new Claim(ClaimTypes.Name, usuarioModelo.Username),
+                            new Claim(ClaimTypes.Authentication, usuarioModelo.Token),
+                            new Claim(ClaimTypes.NameIdentifier, usuarioModelo.Id.ToString())};
 
                         var claimsIdentity = new ClaimsIdentity(
                             claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -72,9 +73,14 @@ namespace WebAppReceitas.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Deslogar()
+        public async Task<IActionResult> Deslogar(string? msg)
         {
             await HttpContext.SignOutAsync();
+            if (msg != null)
+            {
+                _toast.AddWarningToastMessage(msg);
+                return RedirectToAction("Login");
+            }
             return RedirectToAction("Index", "Home");
         }
 

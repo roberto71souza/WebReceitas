@@ -10,12 +10,11 @@ namespace WebAppReceitas.Services
 {
     public class RegistroService
     {
-        public HttpClient _client { get => _factory.CreateClient("UrlBase"); }
-        public IHttpClientFactory _factory { get; set; }
+        public HttpClient _client { get; set; }
 
         public RegistroService(IHttpClientFactory factory)
         {
-            _factory = factory;
+            _client = factory.CreateClient("UrlBase");
         }
 
         public Task<string> RegistrarUsuario(RegistraUsuarioModel model, out bool token, out bool erro)

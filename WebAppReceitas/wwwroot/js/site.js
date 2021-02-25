@@ -2,7 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-ShowInModal = (url, title, id) => {
+ShowInModal = (url, title) => {
     $.ajax({
         type: "GET",
         url: url,
@@ -12,4 +12,8 @@ ShowInModal = (url, title, id) => {
             $("#exampleModal").modal('show');
         }
     });
+};
+
+funcReload = () => {
+location.reload();
 };

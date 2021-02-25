@@ -13,22 +13,38 @@ namespace WebAppReceitas
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
-
-            services.AddHttpClient("UrlBase", client => {
-                client.BaseAddress = new Uri("https://localhost:44311/");
+            //Mapeamento
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ProfileMapper());
             });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
+            services.AddScoped<LoginService>();
+            services.AddScoped<ReceitaService>();
+            services.AddScoped<RegistroService>();
+
+            services.AddHttpClient("UrlBase", client =>
+                {
+                    client.BaseAddress = new Uri("https://localhost:44311/");
+                });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(opt =>
+                {
+                    opt.Cookie.HttpOnly = true;
+                    opt.Cookie.IsEssential = true;
+                });
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -39,21 +55,6 @@ namespace WebAppReceitas
                 Timeout = 7000,
                 Theme = "mint"
             });
-
-            //Mapeamento
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new ProfileMapper());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-
-            services.AddSingleton(mapper);
-
-            services.AddScoped<LoginService>();
-            services.AddScoped<ReceitaService>();
-            services.AddScoped<RegistroService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
