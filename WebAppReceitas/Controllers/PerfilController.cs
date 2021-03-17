@@ -57,9 +57,7 @@ namespace WebAppReceitas.Controllers
             {
                 return PartialView();
             }
-            var button = $@"<p>Sessao expirada efetue o login novamente<p>
-                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
-            return Json(button);
+            return Unauthorized();
         }
 
         [HttpPost]
@@ -106,9 +104,7 @@ namespace WebAppReceitas.Controllers
                     var receitaMap = _mapper.Map<ReceitaModel>(receita);
                     return View(receitaMap);
                 }
-                var button = $@"<p>Sessao expirada efetue o login novamente<p>
-                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
-                return Json(button);
+                return Unauthorized();
             }
             catch (Exception)
             {
@@ -131,9 +127,7 @@ namespace WebAppReceitas.Controllers
                     var receitaMap = _mapper.Map<ReceitaModel>(receita);
                     return View(receitaMap);
                 }
-                var button = $@"<p>Sessao expirada efetue o login novamente<p>
-                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
-                return Json(button);
+                return Unauthorized();
             }
             catch (Exception)
             {
@@ -185,9 +179,7 @@ namespace WebAppReceitas.Controllers
                     var receitaMap = _mapper.Map<ReceitaModel>(receita);
                     return View(receitaMap);
                 }
-                var button = $@"<p>Sessao expirada efetue o login novamente<p>
-                <button class='btn btn-outline-light' onclick='funcReload()'>ok</button>";
-                return Json(button);
+                return Unauthorized();
             }
             catch (Exception)
             {
